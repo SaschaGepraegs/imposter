@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Imposter – Das Wortspiel</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game">
+        <!-- Start/Setup -->
+        <section id="setup" class="active">
+            <h1>Imposter</h1>
+            <form id="playerForm" autocomplete="off">
+                <label>Spieleranzahl:
+                    <input type="number" id="playerCount" min="4" max="10" value="4" required>
+                </label>
+                <div id="nameInputs"></div>
+                <button type="submit" id="startGameBtn">Spiel starten</button>
+                <div id="setupHint" style="color:#f87171;font-size:1em;margin-top:8px;display:none;">
+                    Bitte mindestens 4 Spielernamen eingeben!
+                </div>
+            </form>
+        </section>
+
+        <!-- Wortanzeige für Spieler -->
+        <section id="wordReveal">
+            <h2 id="revealTitle"></h2>
+            <div id="revealContent"></div>
+            <button id="showWordBtn">Wort anzeigen</button>
+            <button id="nextPlayerBtn" style="display:none;">Nächster Spieler</button>
+        </section>
+
+        <!-- Hinweise (nur Info, kein Eingabefeld) -->
+        <section id="hintPhase">
+            <h2>Hinweisrunde</h2>
+            <div id="hintInfo" style="text-align:center;max-width:320px;">
+                Gebt jetzt reihum mündlich Hinweise zum Wort.<br>
+                <span style="color:#60a5fa;">Drückt auf "Weiter", wenn alle fertig sind.</span>
+            </div>
+            <button id="hintNextBtn">Weiter zur Abstimmung</button>
+        </section>
+
+        <!-- Abstimmung -->
+        <section id="votePhase">
+            <h2>Abstimmung: Wer ist der Imposter?</h2>
+            <div id="votePlayers"></div>
+            <button id="submitVotesBtn">Abstimmung abschließen</button>
+        </section>
+
+        <!-- Imposter-Rat -->
+        <section id="imposterGuessPhase">
+            <h2>Imposter, errate das geheime Wort!</h2>
+            <input type="text" id="imposterGuessInput" maxlength="50" autocomplete="off">
+            <button id="submitImposterGuessBtn">Raten</button>
+        </section>
+
+        <!-- Ergebnis -->
+        <section id="resultPhase">
+            <h2 id="resultTitle"></h2>
+            <div id="resultDetails"></div>
+            <button id="restartBtn">Neues Spiel</button>
+        </section>
+    </div>
+    <script>
+    // Zeige Hinweis, falls zu wenig Spieler
+    document.getElementById("playerForm").addEventListener("submit", function(e) {
+        let valid = true;
+        for (let i = 0; i < parseInt(document.getElementById("playerCount").value, 10); i++) {
+            const name = document.getElementById(`playerName${i}`).value.trim();
+            if (!name) valid = false;
+        }
+        if (parseInt(document.getElementById("playerCount").value, 10) < 4) valid = false;
+        document.getElementById("setupHint").style.display = valid ? "none" : "block";
+        if (!valid) e.preventDefault();
+    });
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>

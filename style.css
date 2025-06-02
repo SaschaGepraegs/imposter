@@ -1,0 +1,189 @@
+body {
+    background: linear-gradient(120deg, #232526 0%, #485563 100%);
+    color: #f9fafb;
+    font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+    margin: 0;
+    min-height: 100vh;
+    letter-spacing: 0.01em;
+}
+#game {
+    width: 100vw;
+    max-width: 430px;
+    margin: 0 auto;
+    margin-top: 0;
+    background: rgba(28, 32, 38, 0.98);
+    border-radius: 0 0 28px 28px;
+    box-shadow: 0 8px 32px 0 #0007, 0 1.5px 8px #60a5fa22;
+    padding: 22px 5vw 32px 5vw;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    min-height: 100vh;
+    box-sizing: border-box;
+    border-top: 4px solid #60a5fa;
+    transition: box-shadow 0.2s;
+}
+@media (min-width: 600px) {
+    #game {
+        margin-top: 32px;
+        border-radius: 28px;
+        min-height: 60vh;
+    }
+}
+section {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 22px;
+    width: 100%;
+}
+section.active {
+    display: flex;
+    animation: fadeIn 0.4s;
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(16px);}
+    to { opacity: 1; transform: translateY(0);}
+}
+h1 {
+    margin: 0 0 12px 0;
+    font-weight: 900;
+    font-size: 2.2em;
+    letter-spacing: 1.5px;
+    color: #60a5fa;
+    text-shadow: 0 2px 16px #2563eb33, 0 1px 0 #0004;
+    text-align: center;
+    letter-spacing: 0.04em;
+}
+h2 {
+    margin: 0 0 6px 0;
+    font-weight: 700;
+    font-size: 1.18em;
+    color: #fbbf24;
+    text-shadow: 0 1px 4px #0003;
+    text-align: center;
+    letter-spacing: 0.02em;
+}
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 1em;
+    color: #e0e7ef;
+    font-weight: 500;
+}
+input[type="number"], input[type="text"] {
+    padding: 14px 16px;
+    border-radius: 12px;
+    border: none;
+    margin-bottom: 12px;
+    font-size: 1.08em;
+    background: #23272f;
+    color: #f9fafb;
+    width: 100%;
+    box-sizing: border-box;
+    outline: none;
+    transition: background 0.2s, box-shadow 0.2s, border 0.2s;
+    border: 2px solid transparent;
+    font-family: inherit;
+}
+input[type="number"]:focus, input[type="text"]:focus {
+    background: #1e293b;
+    box-shadow: 0 0 0 2px #60a5fa88;
+    border: 2px solid #60a5fa;
+}
+button {
+    background: linear-gradient(90deg, #60a5fa 0%, #2563eb 100%);
+    color: #fff;
+    border: none;
+    border-radius: 16px;
+    padding: 20px 0;
+    font-size: 1.18em;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 4px;
+    width: 100%;
+    max-width: 360px;
+    box-shadow: 0 2px 12px #2563eb22, 0 1px 2px #0002;
+    transition: background 0.18s, transform 0.08s, box-shadow 0.18s;
+    letter-spacing: 0.5px;
+    outline: none;
+    border-bottom: 3px solid #2563eb;
+}
+button:active {
+    transform: scale(0.97);
+    box-shadow: 0 1px 4px #2563eb33;
+}
+button:focus {
+    box-shadow: 0 0 0 3px #60a5fa88, 0 2px 12px #2563eb22;
+}
+button:disabled {
+    background: #64748b;
+    cursor: not-allowed;
+    opacity: 0.7;
+    border-bottom: 3px solid #64748b;
+}
+#nameInputs input {
+    display: block;
+    margin-bottom: 8px;
+    width: 100%;
+    max-width: 320px;
+}
+#votePlayers {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    max-width: 340px;
+}
+.vote-option {
+    background: #23272f;
+    border-radius: 14px;
+    padding: 18px 0;
+    cursor: pointer;
+    transition: background 0.18s, border 0.18s, color 0.18s;
+    border: 2.5px solid transparent;
+    font-size: 1.12em;
+    color: #f9fafb;
+    box-shadow: 0 1px 8px #0002;
+    text-align: center;
+    margin-bottom: 2px;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    user-select: none;
+}
+.vote-option:hover, .vote-option:focus {
+    background: #1e293b;
+    border: 2.5px solid #60a5fa;
+    color: #fbbf24;
+}
+.vote-option.selected {
+    border: 2.5px solid #60a5fa;
+    background: #1e293b;
+    color: #fbbf24;
+}
+#resultDetails {
+    margin-top: 10px;
+    font-size: 1.13em;
+    color: #e0e7ef;
+    text-align: center;
+    background: #23272f;
+    border-radius: 12px;
+    padding: 16px 10px 10px 10px;
+    box-shadow: 0 1px 8px #0002;
+    margin-bottom: 8px;
+}
+::-webkit-scrollbar {
+    width: 8px;
+    background: #23272f;
+}
+::-webkit-scrollbar-thumb {
+    background: #374151;
+    border-radius: 8px;
+}
+@media (max-width: 480px) {
+    h1 { font-size: 1.3em; }
+    h2 { font-size: 1em; }
+    #game { padding: 8px 2vw 10px 2vw; }
+    .vote-option { font-size: 1em; }
+    button { font-size: 1.05em; padding: 16px 0; }
+}
