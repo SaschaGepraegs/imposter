@@ -3,7 +3,52 @@ const words = [
     "Lehrer", "Elefant", "Schlüssel", "Pizza", "Gitarre",
     "Polizist", "Känguru", "Brille", "Banane", "Roboter",
     "Zahnarzt", "Kaktus", "Schmetterling", "Bäcker", "Trompete",
-    "Koffer", "Pinguin", "Kamera", "Schokolade", "Traktor"
+    "Koffer", "Pinguin", "Kamera", "Schokolade", "Traktor",
+    "Apfel", "Tisch", "Auto", "Hund", "Katze",
+    "Buch", "Stuhl", "Lampe", "Fahrrad", "Brot",
+    "Vogel", "Zebra", "Bleistift", "Telefon", "Computer",
+    "Fenster", "Maus", "Kuh", "Bett", "Baum",
+    "Schaf", "Gabel", "Löffel", "Teller", "Uhr",
+    "Schrank", "Blume", "Sofa", "Treppe", "Kissen",
+    "Küche", "Tasse", "Kanne", "Kuchen", "Fisch",
+    "Schwein", "Tiger", "Löwe", "Affe", "Bär",
+    "Hase", "Ente", "Gans", "Schlange", "Frosch",
+    "Krokodil", "Papagei", "Eule", "Igel", "Fuchs",
+    "Wolf", "Delfin", "Wal", "Hai", "Krabbe",
+    "Seestern", "Qualle", "Pferd", "Esel", "Kamel",
+    "Schmetterling", "Biene", "Ameise", "Marienkäfer", "Libelle",
+    "Spinne", "Käfer", "Wurm", "Schnecke", "Mücke",
+    "Fliege", "Adler", "Falke", "Taube", "Rabe",
+    "Pfau", "Huhn", "Hahn", "Truthahn", "Gans",
+    "Schwan", "Strauß", "Emu", "Kranich", "Storch",
+    "Kran", "Bagger", "Bus", "Zug", "Flugzeug",
+    "Schiff", "Boot", "U-Boot", "Motorrad", "Roller",
+    "Traktor", "Mähdrescher", "Feuerwehr", "Polizeiauto", "Krankenwagen",
+    "Taxi", "Lastwagen", "Anhänger", "Wohnmobil", "Kutsche",
+    "Helikopter", "Rakete", "Satellit", "Ballon", "Drachen",
+    "Schlitten", "Ski", "Snowboard", "Schlittschuh", "Rollschuh",
+    "Skateboard", "Surfbrett", "Paddelboot", "Kanu", "Ruderboot",
+    "Segelboot", "Yacht", "Kreuzfahrtschiff", "Fähre", "Kutter",
+    "Angel", "Netz", "Korb", "Kiste", "Becher",
+    "Flasche", "Dose", "Glas", "Topf", "Pfanne",
+    "Backblech", "Mixer", "Toaster", "Wasserkocher", "Herd",
+    "Ofen", "Mikrowelle", "Kühlschrank", "Gefrierschrank", "Spülmaschine",
+    "Waschmaschine", "Trockner", "Staubsauger", "Besen", "Schaufel",
+    "Eimer", "Wischmopp", "Handtuch", "Seife", "Zahnbürste",
+    "Zahnpasta", "Kamm", "Bürste", "Schere", "Nagelknipser",
+    "Rasierer", "Föhn", "Spiegel", "Kleiderschrank", "Kommode",
+    "Regal", "Schreibtisch", "Nachttisch", "Fernseher", "Radio",
+    "Lautsprecher", "Kopfhörer", "Mikrofon", "Kamera", "Drucker",
+    "Scanner", "Tablet", "Smartphone", "Laptop", "Monitor",
+    "Tastatur", "Mauspad", "USB-Stick", "Festplatte", "Router",
+    "Modem", "Kabel", "Steckdose", "Lampe", "Kerze",
+    "Taschenlampe", "Batterie", "Akku", "Wecker", "Kalender",
+    "Uhr", "Brille", "Sonnenbrille", "Hut", "Mütze",
+    "Schal", "Handschuh", "Jacke", "Mantel", "Hemd",
+    "Bluse", "T-Shirt", "Pullover", "Hose", "Rock",
+    "Kleid", "Schuhe", "Stiefel", "Sandalen", "Socken",
+    "Unterhose", "BH", "Pyjama", "Badeanzug", "Bikini",
+    "Handtasche", "Rucksack", "Koffer", "Geldbörse", "Portemonnaie"
 ];
 let players = [];
 let hints = [];
@@ -118,7 +163,12 @@ function startGame() {
     players = players.map(p => ({ name: p.name }));
     // Wort und Imposter bestimmen
     secretWord = words[Math.floor(Math.random() * words.length)];
-    imposterIndex = Math.floor(Math.random() * players.length);
+    // 10% Chance: alle sind Imposter
+    if (Math.random() < 0.1) {
+        imposterIndex = -1; // -1 signalisiert: alle sind Imposter
+    } else {
+        imposterIndex = Math.floor(Math.random() * players.length);
+    }
     currentPlayerIdx = 0;
     voteSelections = Array(players.length).fill(null);
     voted = [];
@@ -133,7 +183,8 @@ function showWordReveal() {
     document.getElementById("showWordBtn").style.display = "";
     document.getElementById("nextPlayerBtn").style.display = "none";
     document.getElementById("showWordBtn").onclick = () => {
-        if (currentPlayerIdx === imposterIndex) {
+        // Prüfe auf "alle sind Imposter"
+        if (imposterIndex === -1 || currentPlayerIdx === imposterIndex) {
             revealContent.innerHTML = `<span style="color:#f87171;font-weight:600;">Du bist der Imposter!</span>`;
         } else {
             revealContent.innerHTML = `<span style="color:#34d399;font-weight:600;">Geheimes Wort:</span> <span style="font-size:1.2em;">${secretWord}</span>`;
@@ -220,7 +271,10 @@ function evaluateVotes() {
     counts.forEach((c, idx) => { if (c === maxVotes) suspects.push(idx); });
     // Bei Gleichstand: zufällig einen wählen
     const accusedIdx = suspects[Math.floor(Math.random() * suspects.length)];
-    if (accusedIdx === imposterIndex) {
+    // Wenn alle Imposter sind, gewinnt automatisch die Imposter-Seite
+    if (imposterIndex === -1) {
+        showResultPhase(true, accusedIdx, "allImposters");
+    } else if (accusedIdx === imposterIndex) {
         showImposterGuessPhase();
     } else {
         showResultPhase(false, accusedIdx);
@@ -243,16 +297,17 @@ submitImposterGuessBtn.onclick = () => {
 };
 
 // --- Ergebnisanzeige ---
-function showResultPhase(imposterWin, accusedIdx, imposterRaten = false) {
+function showResultPhase(imposterWin, accusedIdx, special = null) {
     showSection("resultPhase");
-    if (imposterRaten) {
-        if (imposterWin) {
-            resultTitle.textContent = "Imposter gewinnt!";
-            resultDetails.innerHTML = `Der Imposter <b>${players[imposterIndex].name}</b> hat das geheime Wort <span style="color:#34d399;font-weight:600;">"${secretWord}"</span> richtig erraten.`;
-        } else {
-            resultTitle.textContent = "Crew gewinnt!";
-            resultDetails.innerHTML = `Der Imposter <b>${players[imposterIndex].name}</b> hat das Wort nicht erraten.<br>Das geheime Wort war <span style="color:#34d399;font-weight:600;">"${secretWord}"</span>.`;
-        }
+    if (special === "allImposters") {
+        resultTitle.textContent = "Alle waren Imposter!";
+        resultDetails.innerHTML = `Niemand kann das Wort wissen.<br><span style="color:#34d399;font-weight:600;">Das geheime Wort wäre gewesen: "${secretWord}"</span>`;
+    } else if (imposterWin && arguments.length === 3) {
+        resultTitle.textContent = "Imposter gewinnt!";
+        resultDetails.innerHTML = `Der Imposter <b>${players[imposterIndex].name}</b> hat das geheime Wort <span style="color:#34d399;font-weight:600;">"${secretWord}"</span> richtig erraten.`;
+    } else if (!imposterWin && arguments.length === 3) {
+        resultTitle.textContent = "Crew gewinnt!";
+        resultDetails.innerHTML = `Der Imposter <b>${players[imposterIndex].name}</b> hat das Wort nicht erraten.<br>Das geheime Wort war <span style="color:#34d399;font-weight:600;">"${secretWord}"</span>.`;
     } else {
         resultTitle.textContent = "Imposter gewinnt!";
         resultDetails.innerHTML = `Der Spieler <b>${players[accusedIdx].name}</b> wurde fälschlich gewählt.<br>Der Imposter war <b>${players[imposterIndex].name}</b>.<br>Das geheime Wort war <span style="color:#34d399;font-weight:600;">"${secretWord}"</span>.`;
